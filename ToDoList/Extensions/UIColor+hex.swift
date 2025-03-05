@@ -18,11 +18,26 @@ extension UIColor {
         )
     }
     
+    // MARK: TaskList Colors
     struct TaskList {
-        static let background = UIColor(hex: "040404")
-        static let foreground = UIColor(hex: "F4F4F4")
-        //static let separator = UIColor(hex: "4D555E")
-        static let separator = UIColor(hex: "F4F4F4").withAlphaComponent(0.5)
+        
+        // MARK: Background
+        struct Background {
+            static let primary = UIColor(hex: "040404")
+            static let second = UIColor(hex: "272729")
+        }
+
+        // MARK: Foreground
+        struct Foreground {
+            static let primary = UIColor(hex: "F4F4F4")
+            static let second = UIColor(hex: "F4F4F4").withAlphaComponent(0.5)
+        }
+
+        // MARK: Element
+        struct Element {
+            static let separator = UIColor(hex: "4D555E")
+            static let placeholder = UIColor(hex: "212123")
+        }
     }
 }
 

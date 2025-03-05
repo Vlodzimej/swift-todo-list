@@ -10,9 +10,9 @@ import Foundation
 // MARK: - TaskItem
 struct TaskItem: Decodable {
     let id: Int
-    let title: String?
-    let todo: String
-    let completed: Bool
+    var title: String?
+    var todo: String
+    var completed: Bool
     let userId: Int
     let date: Date?
     

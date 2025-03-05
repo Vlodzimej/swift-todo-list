@@ -17,8 +17,10 @@ protocol TaskListInteractorProtocol {
 // MARK: - TaskListInteractor
 final class TaskListInteractor: TaskListInteractorProtocol {
     
+    // MARK: Properties
     private(set) var data: [TaskItem] = []
     
+    // MARK: Public methods
     func fetchData() {
         data = [
             .init(id: 0, title: "Title 1", todo: "Test dsfsdfsdf \n sdfsdfdsf \n sdfsdfds \ndsfdsfsdfsd \n dsfsdfdsf", completed: false, userId: 0, date: Date.now),
