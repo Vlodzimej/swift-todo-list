@@ -59,7 +59,7 @@ extension TaskCreationPresenter: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         let currentText = textView.text ?? ""
         let newText = (currentText as NSString).replacingCharacters(in: range, with: text)
-        return newText.count <= interactor.maxTitleLength
+        return newText.count <= interactor.maxDescriptionLength
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -81,6 +81,6 @@ extension TaskCreationPresenter: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let currentText = textField.text ?? ""
         let newText = (currentText as NSString).replacingCharacters(in: range, with: string)
-        return newText.count <= interactor.maxDescriptionLength
+        return newText.count <= interactor.maxTitleLength
     }
 }

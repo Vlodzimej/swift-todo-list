@@ -25,8 +25,8 @@ final class TaskListInteractor: TaskListInteractorProtocol {
     // MARK: Public methods
     func fetchData() {
         data = [
-            .init(id: 0, title: "Title 1", todo: "Test dsfsdfsdf \n sdfsdfdsf \n sdfsdfds \ndsfdsfsdfsd \n dsfsdfdsf", completed: false, userId: 0, date: Date.now),
-            .init(id: 1, title: "Title 2", todo: "Test", completed: true, userId: 0, date: Date.now)
+            .init(id: 0, title: "Заняться спортом", todo: "Сходить в спортзал или сделать тренировку дома. Не забыть про разминку и растяжку!", completed: false, userId: 0, date: Date.now),
+            .init(id: 1, title: "Работа над проектом", todo: "Выделить время для работы над проектом на работе. Сфокусироваться на выполнении важных задач", completed: true, userId: 0, date: Date.now)
         ]
     }
     

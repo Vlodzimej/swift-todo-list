@@ -102,11 +102,15 @@ final class TaskCreationViewController: UIViewController, TaskCreationViewProtoc
         NSLayoutConstraint.activate([
             descriptionTextView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: UIConstants.descriptionTextFielTopOffset),
             descriptionTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: UIConstants.horizontalPadding),
-            descriptionTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: UIConstants.horizontalPadding),
+            descriptionTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -UIConstants.horizontalPadding),
             descriptionTextView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
         
         presenter.viewDidLoad()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        navigationController?.navigationBar.prefersLargeTitles = false
     }
     
     @objc private func titleTextFieldDidChange() {

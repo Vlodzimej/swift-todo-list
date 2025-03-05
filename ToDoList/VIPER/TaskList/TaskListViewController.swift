@@ -86,6 +86,10 @@ final class TaskListViewController: UIViewController, TaskListViewProtocol {
         ])
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        navigationController?.navigationBar.prefersLargeTitles = true
+    }
+    
     // MARK: Private methods
     private func configureNavBar() {
         navigationItem.title = "Задачи"
