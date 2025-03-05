@@ -15,7 +15,7 @@ protocol TaskCreationInteractorProtocol {
     
     func update(title: String)
     func update(todo: String)
-    func getBlank() -> TaskItem
+    func createBlankTask()
 }
 
 // MARK: - TaskCreationInteractor
@@ -37,11 +37,9 @@ final class TaskCreationInteractor: TaskCreationInteractorProtocol {
         self.item = item
     }
     
-    func getBlank() -> TaskItem {
-        let item = TaskItem(id: 0, todo: "", completed: false, userId: 0, date: Date.now)
-        self.item = item
-        
-        return item
+    // MARK: Public Methods
+    func createBlankTask() {
+        self.item = TaskItem(id: 0, todo: "", completed: false, userId: 0, date: Date.now)
     }
     
     func update(title: String) {

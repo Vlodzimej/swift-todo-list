@@ -7,6 +7,11 @@
 
 import UIKit
 
+// MARK: - TaskItemViewCellOutput
+protocol TaskItemViewCellOutput: AnyObject {
+    func didToggleTaskCompleteValue(taskId: Int)
+}
+
 // MARK: - TaskItemViewCell
 final class TaskItemViewCell: UITableViewCell {
     
@@ -20,17 +25,21 @@ final class TaskItemViewCell: UITableViewCell {
     }
     
     // MARK: Properties
+    weak var output: TaskItemViewCellOutput?
+    
+    private var taskId: Int? = nil
+    
     static let identifier: String = {
         String(describing: TaskItemViewCell.self)
     }()
     
-    private var model: TaskItem?
-
     // MARK: UIProperties
-    private let statusImageView: UIImageView = {
+    private lazy var statusImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapStatusIcon)))
+        imageView.isUserInteractionEnabled = true
         return imageView
     }()
     
@@ -85,6 +94,8 @@ final class TaskItemViewCell: UITableViewCell {
             separatorView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             separatorView.heightAnchor.constraint(equalToConstant: UIConstants.separatorHeight)
         ])
+        
+        contentView.removeFromSuperview()
     }
     
     required init?(coder: NSCoder) {
@@ -98,10 +109,19 @@ final class TaskItemViewCell: UITableViewCell {
         descriptionLabel.attributedText = nil
         dateLabel.attributedText = nil
         statusImageView.image = nil
+        taskId = nil
+    }
+    
+    // MARK: Private Methods
+    @objc private func didTapStatusIcon() {
+        guard let taskId else { return }
+        output?.didToggleTaskCompleteValue(taskId: taskId)
     }
     
     // MARK: Public methods
     func configurate(model: TaskItem, isLast: Bool) {
+        taskId = model.id
+        
         // Иконка статуса
         let imageName = model.completed ? "ok" : "empty"
         statusImageView.image = UIImage(named: imageName)

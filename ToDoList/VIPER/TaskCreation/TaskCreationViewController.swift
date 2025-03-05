@@ -30,18 +30,13 @@ final class TaskCreationViewController: UIViewController, TaskCreationViewProtoc
     // MARK: Properties
     private let presenter: TaskCreationPresenterProtocol
     
-    private var currentTitleFont: CGFloat = UIConstants.defaultTitleFont {
-        didSet {
-            updateTitleFont()
-        }
-    }
-    
     // MARK: UIProperties
     private lazy var titleTextField: UITextField = {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.textColor = .TaskList.Foreground.primary
         textField.backgroundColor = .TaskList.Background.primary
+        textField.font = .systemFont(ofSize: 34, weight: .bold)
         textField.addTarget(self, action: #selector(titleTextFieldDidChange), for: .editingChanged)
         textField.adjustsFontSizeToFitWidth = true
         textField.delegate = presenter
@@ -86,6 +81,7 @@ final class TaskCreationViewController: UIViewController, TaskCreationViewProtoc
         let button = UIBarButtonItem()
         button.setTitleTextAttributes([.foregroundColor: UIColor.yellow], for: .normal)
         navigationItem.backBarButtonItem = button
+        navigationController?.navigationBar.prefersLargeTitles = false
         
         view.addSubview(titleTextField)
         NSLayoutConstraint.activate([
@@ -112,10 +108,6 @@ final class TaskCreationViewController: UIViewController, TaskCreationViewProtoc
         
         presenter.viewDidLoad()
     }
-
-    override func viewWillAppear(_ animated: Bool) {
-        updateTitleFont()
-    }
     
     @objc private func titleTextFieldDidChange() {
         guard let text = titleTextField.text else { return }
@@ -132,10 +124,6 @@ final class TaskCreationViewController: UIViewController, TaskCreationViewProtoc
         } else {
             descriptionTextView.text = model.todo
         }
-    }
-    
-    func updateTitleFont() {
-        titleTextField.font = .systemFont(ofSize: currentTitleFont, weight: .bold)
     }
     
     func setDescriptionPlaceholder(isVisible: Bool) {

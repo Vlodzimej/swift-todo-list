@@ -21,6 +21,7 @@ final class TaskListViewController: UIViewController, TaskListViewProtocol {
     struct UIConstants {
         static let estimatedRowHeight: CGFloat = 90
         static let horizontalPadding: CGFloat = 20
+        static let footerHeight: CGFloat = 83
     }
     
     // MARK: Properties
@@ -81,14 +82,8 @@ final class TaskListViewController: UIViewController, TaskListViewProtocol {
             footerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             footerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             footerView.bottomAnchor.constraint(equalTo: view.bottomAnchor), 
-            footerView.heightAnchor.constraint(equalToConstant: 83)
+            footerView.heightAnchor.constraint(equalToConstant: UIConstants.footerHeight)
         ])
-        
-
-    }
-    
-    func updateCount(with value: Int) {
-        footerView.updateCount(with: value)
     }
     
     // MARK: Private methods
@@ -107,6 +102,11 @@ final class TaskListViewController: UIViewController, TaskListViewProtocol {
         searchController.searchBar.placeholder = "Search"
         navigationItem.searchController = searchController
         definesPresentationContext = true
+    }
+    
+    // MARK: Public Methods
+    func updateCount(with value: Int) {
+        footerView.updateCount(with: value)
     }
 }
 

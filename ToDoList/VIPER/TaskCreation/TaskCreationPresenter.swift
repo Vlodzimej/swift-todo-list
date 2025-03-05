@@ -37,8 +37,12 @@ final class TaskCreationPresenter: NSObject, TaskCreationPresenterProtocol {
     
     // MARK: Public Methods
     func viewDidLoad() {
-        let item = interactor.item ?? interactor.getBlank()
-        view?.update(with: item)
+        if let item = interactor.item {
+            view?.update(with: item)
+        } else {
+            interactor.createBlankTask()
+            view?.setDescriptionPlaceholder(isVisible: true)
+        }
     }
     
     func titleDidChange(newValue title: String) {
