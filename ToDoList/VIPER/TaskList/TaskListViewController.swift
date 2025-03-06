@@ -92,6 +92,8 @@ final class TaskListViewController: UIViewController, TaskListViewProtocol {
         searchController.searchResultsUpdater = presenter
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Search"
+        searchController.searchBar.tintColor = .TaskList.Element.button
+        searchController.searchBar.searchTextField.textColor = .TaskList.Element.button
         navigationItem.searchController = searchController
         definesPresentationContext = true
     }

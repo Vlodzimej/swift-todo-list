@@ -10,7 +10,7 @@ import Foundation
 // MARK: - TaskListInDto
 struct TaskListInDto: Decodable {
     
-    // MARK - TaskInDto
+    // MARK: TaskInDto
     struct TaskInDto: Decodable {
         let id: Int
         let todo: String
@@ -20,6 +20,7 @@ struct TaskListInDto: Decodable {
     
     let todos: [TaskInDto]
     
+    // MARK: Methods
     func convertToTaskList() -> [TaskItem] {
         todos.map { TaskItem(id: $0.id,
                              title: String($0.todo.prefix(32)),

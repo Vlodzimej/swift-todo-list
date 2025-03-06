@@ -45,6 +45,7 @@ final class TaskListPresenter: NSObject, TaskListPresenterProtocol {
         interactor.removeTask(by: index) { [weak self] in
             guard let self else { return }
             self.tableView?.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+            self.view?.updateCount(with: self.interactor.data.count)
         }
     }
     
