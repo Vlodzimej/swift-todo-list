@@ -73,33 +73,21 @@ final class TaskListViewController: UIViewController, TaskListViewProtocol {
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
         
-        configureNavBar()
-        configureSearchController()
-        presenter.viewDidLoad()
-        
         view.addSubview(footerView)
         NSLayoutConstraint.activate([
             footerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             footerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            footerView.bottomAnchor.constraint(equalTo: view.bottomAnchor), 
+            footerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             footerView.heightAnchor.constraint(equalToConstant: UIConstants.footerHeight)
         ])
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        navigationController?.navigationBar.prefersLargeTitles = true
+        
+        configureNavigationBar(largeTitleColor: .TaskList.Foreground.primary, backgoundColor: .TaskList.Background.primary, tintColor: .TaskList.Element.button, title: "Задачи", preferredLargeTitle: true)
+        
+        configureSearchController()
+        presenter.viewDidLoad()
     }
     
     // MARK: Private methods
-    private func configureNavBar() {
-        navigationItem.title = "Задачи"
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.navigationBar.largeTitleTextAttributes = [
-            .font: UIFont.systemFont(ofSize: 34, weight: .bold),
-            .foregroundColor: UIColor.white
-        ]
-    }
-    
     private func configureSearchController() {
         searchController.searchResultsUpdater = presenter
         searchController.obscuresBackgroundDuringPresentation = false

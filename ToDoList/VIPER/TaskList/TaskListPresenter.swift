@@ -51,9 +51,13 @@ final class TaskListPresenter: NSObject, TaskListPresenterProtocol {
     // MARK: Public methods
     func viewDidLoad() {
         guard let view else { return }
-        interactor.fetchData()
-        view.tableView.reloadData()
-        view.updateCount(with: interactor.data.count)
+        interactor.fetchData() { [weak self] in
+            guard let self else { return }
+            DispatchQueue.main.async {
+                view.tableView.reloadData()
+                view.updateCount(with: self.interactor.data.count)
+            }
+        }
     }
     
     func getTask(by index: Int) -> TaskItem? {
@@ -86,21 +90,17 @@ extension TaskListPresenter: UITableViewDelegate, UITableViewDataSource {
         return UIContextMenuConfiguration(identifier: nil,
                                           previewProvider: {
             guard let item = self.interactor.data[safe: indexPath.row] else { return UIViewController() }
-            let viewController = TaskItemCardViewController(model: item)
+            let viewController = TaskItemPreviewViewController(model: item)
             return viewController
         },
                                           actionProvider: { _ in
-            let editAction = UIAction(title: NSLocalizedString("Редактировать", comment: ""),
-                                         image: UIImage(named: "edit")) { action in
+            let editAction = UIAction(title: NSLocalizedString("Редактировать", comment: ""), image: UIImage(named: "edit")) { action in
                 self.didTapEditTask(by: indexPath.row)
             }
-            let shareAction = UIAction(title: NSLocalizedString("Поделиться", comment: ""),
-                                           image: UIImage(named: "export")) { action in
+            let shareAction = UIAction(title: NSLocalizedString("Поделиться", comment: ""), image: UIImage(named: "export")) { action in
                 self.didTapShareTask(by: indexPath.row)
             }
-            let removeAction = UIAction(title: NSLocalizedString("Удалить", comment: ""),
-                                        image: UIImage(named: "trash"),
-                                        attributes: .destructive) { action in
+            let removeAction = UIAction(title: NSLocalizedString("Удалить", comment: ""), image: UIImage(named: "trash"), attributes: .destructive) { action in
                 self.didTapRemoveTask(by: indexPath.row)
             }
             
@@ -130,6 +130,7 @@ extension TaskListPresenter: TaskCreationModuleOutput {
     }
 }
 
+// MARK: - TaskItemViewCellOutput
 extension TaskListPresenter: TaskItemViewCellOutput {
     func didToggleTaskCompleteValue(taskId: Int) {
         interactor.toggleTaskCompleteValue(in: taskId) { [weak self] rowForUpdate in

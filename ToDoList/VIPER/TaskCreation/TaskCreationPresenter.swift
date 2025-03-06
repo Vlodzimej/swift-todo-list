@@ -37,10 +37,9 @@ final class TaskCreationPresenter: NSObject, TaskCreationPresenterProtocol {
     
     // MARK: Public Methods
     func viewDidLoad() {
-        if let item = interactor.item {
-            view?.update(with: item)
+        if let task = interactor.initialTask {
+            view?.update(with: task)
         } else {
-            interactor.createBlankTask()
             view?.setDescriptionPlaceholder(isVisible: true)
         }
     }
@@ -63,13 +62,13 @@ extension TaskCreationPresenter: UITextViewDelegate {
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if interactor.item?.todo.isEmpty ?? true {
+        if interactor.task.todo.isEmpty {
             view?.setDescriptionPlaceholder(isVisible: false)
         }
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
-        if interactor.item?.todo.isEmpty ?? true {
+        if interactor.task.todo.isEmpty {
             view?.setDescriptionPlaceholder(isVisible: true)
         }
     }

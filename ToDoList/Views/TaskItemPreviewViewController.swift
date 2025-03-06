@@ -1,5 +1,5 @@
 //
-//  TaskItemCardViewController.swift
+//  TaskItemPreviewViewController.swift
 //  ToDoList
 //
 //  Created by Владимир Амелькин on 05.03.2025.
@@ -8,7 +8,7 @@
 import UIKit
 
 // MARK: - TaskItemCardView
-final class TaskItemCardViewController: UIViewController {
+final class TaskItemPreviewViewController: UIViewController {
     
     private let model: TaskItem
     

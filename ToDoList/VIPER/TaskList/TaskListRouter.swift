@@ -10,7 +10,7 @@ import UIKit
 // MARK: - TaskListRouterProtocol
 protocol TaskListRouterProtocol {
     func openTaskCreation(output: TaskCreationModuleOutput?)
-    func openTaskEdition(with item: TaskItem, output: TaskCreationModuleOutput?)
+    func openTaskEdition(with task: TaskItem, output: TaskCreationModuleOutput?)
 }
 
 // MARK: - TaskListRouter
@@ -27,8 +27,8 @@ final class TaskListRouter: TaskListRouterProtocol {
         navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func openTaskEdition(with item: TaskItem, output: TaskCreationModuleOutput?) {
-        let viewController = TaskCreationModuleBuilder.build(item: item, output: output)
+    func openTaskEdition(with initialTask: TaskItem, output: TaskCreationModuleOutput?) {
+        let viewController = TaskCreationModuleBuilder.build(initialTask: initialTask, output: output)
         navigationController?.pushViewController(viewController, animated: true)
     }
 }

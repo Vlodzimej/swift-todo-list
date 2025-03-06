@@ -37,6 +37,7 @@ extension UIColor {
         struct Element {
             static let separator = UIColor(hex: "4D555E")
             static let placeholder = UIColor(hex: "212123")
+            static let button = UIColor(hex: "FED702")
         }
     }
 }

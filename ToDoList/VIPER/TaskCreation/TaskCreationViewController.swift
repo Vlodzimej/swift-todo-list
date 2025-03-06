@@ -108,11 +108,7 @@ final class TaskCreationViewController: UIViewController, TaskCreationViewProtoc
         
         presenter.viewDidLoad()
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        navigationController?.navigationBar.prefersLargeTitles = false
-    }
-    
+
     @objc private func titleTextFieldDidChange() {
         guard let text = titleTextField.text else { return }
         presenter.titleDidChange(newValue: text)
