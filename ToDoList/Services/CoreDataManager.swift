@@ -62,8 +62,6 @@ final class CoreDataManager: CoreDataManagerProtocol {
         }
     }
     
-    
-    /// Сохраняет массив сущностей в Core Data
     func save(dataArray: [[String: Any]], entityName: EntityName) throws {
         for data in dataArray {
             let entity = NSEntityDescription.insertNewObject(forEntityName: entityName.rawValue, into: viewContext)
@@ -75,15 +73,12 @@ final class CoreDataManager: CoreDataManagerProtocol {
     }
     
     func add(data: [String: Any], entityName: EntityName, completion: @escaping (Result<Void, Error>) -> Void) {
-        // Создаем новую сущность задачи
         let entity = NSEntityDescription.insertNewObject(forEntityName: entityName.rawValue, into: viewContext)
         
-        // Заполняем сущность данными
         for (key, value) in data {
             entity.setValue(value, forKey: key)
         }
-        
-        // Сохраняем изменения
+    
         do {
             try viewContext.save()
             completion(.success(()))

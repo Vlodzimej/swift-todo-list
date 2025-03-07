@@ -40,7 +40,7 @@ final class TaskCreationViewController: UIViewController, TaskCreationViewProtoc
         textField.addTarget(self, action: #selector(titleTextFieldDidChange), for: .editingChanged)
         textField.adjustsFontSizeToFitWidth = true
         textField.delegate = presenter
-        textField.placeholder = "Название"
+        textField.placeholder = String(localized: "title")
         return textField
     }()
     
@@ -82,7 +82,7 @@ final class TaskCreationViewController: UIViewController, TaskCreationViewProtoc
 //        button.setTitleTextAttributes([.foregroundColor: UIColor.yellow], for: .normal)
 //        navigationItem.backBarButtonItem = button
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Назад", style: .plain, target: nil, action: #selector(didTapBackButton))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: String(localized: "back"), style: .plain, target: nil, action: #selector(didTapBackButton))
         
         navigationController?.navigationBar.prefersLargeTitles = false
         
@@ -137,7 +137,7 @@ final class TaskCreationViewController: UIViewController, TaskCreationViewProtoc
     
     func setDescriptionPlaceholder(isVisible: Bool) {
         if isVisible {
-            descriptionTextView.text = "Введите описание задания"
+            descriptionTextView.text = String(localized: "descriptionPlaceholder")
             descriptionTextView.textColor = .TaskList.Element.placeholder
         } else {
             descriptionTextView.text = ""

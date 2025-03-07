@@ -81,7 +81,7 @@ final class TaskListViewController: UIViewController, TaskListViewProtocol {
             footerView.heightAnchor.constraint(equalToConstant: UIConstants.footerHeight)
         ])
         
-        configureNavigationBar(largeTitleColor: .TaskList.Foreground.primary, backgoundColor: .TaskList.Background.primary, tintColor: .TaskList.Element.button, title: "Задачи", preferredLargeTitle: true)
+        configureNavigationBar(largeTitleColor: .TaskList.Foreground.primary, backgoundColor: .TaskList.Background.primary, tintColor: .TaskList.Element.button, title: String(localized: "tasks"), preferredLargeTitle: true)
         
         configureSearchController()
         presenter.viewDidLoad()

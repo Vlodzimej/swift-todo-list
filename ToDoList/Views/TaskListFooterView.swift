@@ -84,6 +84,6 @@ final class TaskListFooterView: UIView {
     
     // MARK: Public methods
     func updateCount(with value: Int) {
-        countLabel.text = "\(value) Задач"
+        countLabel.text = String(localized: "\(value) taskCounter")
     }
 }

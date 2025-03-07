@@ -95,13 +95,13 @@ extension TaskListPresenter: UITableViewDelegate, UITableViewDataSource {
             return viewController
         },
                                           actionProvider: { _ in
-            let editAction = UIAction(title: NSLocalizedString("Редактировать", comment: ""), image: UIImage(named: "edit")) { action in
+            let editAction = UIAction(title: String(localized: "edit"), image: UIImage(named: "edit")) { action in
                 self.didTapEditTask(by: indexPath.row)
             }
-            let shareAction = UIAction(title: NSLocalizedString("Поделиться", comment: ""), image: UIImage(named: "export")) { action in
+            let shareAction = UIAction(title: String(localized: "share"), image: UIImage(named: "export")) { action in
                 self.didTapShareTask(by: indexPath.row)
             }
-            let removeAction = UIAction(title: NSLocalizedString("Удалить", comment: ""), image: UIImage(named: "trash"), attributes: .destructive) { action in
+            let removeAction = UIAction(title: String(localized: "remove"), image: UIImage(named: "trash"), attributes: .destructive) { action in
                 self.didTapRemoveTask(by: indexPath.row)
             }
             
