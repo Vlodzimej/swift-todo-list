@@ -113,6 +113,19 @@ extension TaskListPresenter: UITableViewDelegate, UITableViewDataSource {
 // MARK: - UISearchResultsUpdating
 extension TaskListPresenter: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
+        guard let searchText = searchController.searchBar.text?.lowercased() else { return }
+        
+        if searchText.isEmpty {
+            interactor.fetchData { [weak self] in
+                guard let self else { return }
+                self.view?.tableView.reloadData()
+            }
+        } else {
+            interactor.searchTasks(with: searchText) { [weak self] in
+                guard let self else { return }
+                self.view?.tableView.reloadData()
+            }
+        }
     }
 }
 

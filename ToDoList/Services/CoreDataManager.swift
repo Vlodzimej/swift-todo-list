@@ -4,13 +4,12 @@ import CoreData
 protocol CoreDataManagerProtocol {
     var viewContext: NSManagedObjectContext { get }
     
-    func saveContext()
-    func saveEntities(entityName: EntityName, dataArray: [[String: Any]]) throws
-    func find<T: NSManagedObject>(entityName: EntityName, predicates: [NSPredicate]) -> [T]
+    func find<T: NSManagedObject>(entityName: EntityName, predicates: [NSPredicate]) -> [T] 
+    func save(dataArray: [[String: Any]], entityName: EntityName) throws
     func add(data: [String: Any], entityName: EntityName, completion: @escaping (Result<Void, Error>) -> Void)
     func update(data: [String: Any], by id: Int, entityName: EntityName, completion: @escaping (Result<Void, Error>) -> Void)
     func remove(entity: NSManagedObject, completion: @escaping (Result<Void, Error>) -> Void)
-    func removeAllEntities(entityName: String)
+    func search<T: NSManagedObject>(entityName: EntityName, attributeNames: [String], searchText: String, completion: @escaping (Result<[T], Error>) -> Void) 
 }
 
 enum EntityName: String {
@@ -40,9 +39,7 @@ final class CoreDataManager: CoreDataManagerProtocol {
     }
     
     // MARK: - Public Methods
-    
-    /// Сохраняет изменения в контексте
-    func saveContext() {
+    private func saveContext() {
         if viewContext.hasChanges {
             do {
                 try viewContext.save()
@@ -54,18 +51,6 @@ final class CoreDataManager: CoreDataManagerProtocol {
         }
     }
     
-    /// Сохраняет массив сущностей в Core Data
-    func saveEntities(entityName: EntityName, dataArray: [[String: Any]]) throws {
-        for data in dataArray {
-            let entity = NSEntityDescription.insertNewObject(forEntityName: entityName.rawValue, into: viewContext)
-            for (key, value) in data {
-                entity.setValue(value, forKey: key)
-            }
-        }
-        try viewContext.save()
-    }
-    
-    /// Ищет сущности по предикатам
     func find<T: NSManagedObject>(entityName: EntityName, predicates: [NSPredicate]) -> [T] {
         let fetchRequest = NSFetchRequest<T>(entityName: entityName.rawValue)
         fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
@@ -75,6 +60,18 @@ final class CoreDataManager: CoreDataManagerProtocol {
             print("Failed to fetch entities: \(error)")
             return []
         }
+    }
+    
+    
+    /// Сохраняет массив сущностей в Core Data
+    func save(dataArray: [[String: Any]], entityName: EntityName) throws {
+        for data in dataArray {
+            let entity = NSEntityDescription.insertNewObject(forEntityName: entityName.rawValue, into: viewContext)
+            for (key, value) in data {
+                entity.setValue(value, forKey: key)
+            }
+        }
+        try viewContext.save()
     }
     
     func add(data: [String: Any], entityName: EntityName, completion: @escaping (Result<Void, Error>) -> Void) {
@@ -126,18 +123,20 @@ final class CoreDataManager: CoreDataManagerProtocol {
         }
     }
     
-    /// Удаляет все сущности указанного типа
-    func removeAllEntities(entityName: String) {
-        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: entityName)
-        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+    func search<T: NSManagedObject>(entityName: EntityName, attributeNames: [String], searchText: String, completion: @escaping (Result<[T], Error>) -> Void) {
+        let fetchRequest = NSFetchRequest<T>(entityName: entityName.rawValue)
+        
+        let predicates = attributeNames.map { attributeName in
+            NSPredicate(format: "%K CONTAINS[cd] %@", attributeName, searchText)
+        }
+        
+        fetchRequest.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicates)
         
         do {
-            try viewContext.execute(deleteRequest)
-            try viewContext.save() // Сохраняем изменения после удаления
-            viewContext.reset() // Сбрасываем контекст
-            print("All entities of type \(entityName) removed successfully")
+            let result = try viewContext.fetch(fetchRequest)
+            completion(.success(result))
         } catch {
-            print("Failed to delete entities: \(error)")
+            completion(.failure(NSError(domain: "CoreDataManager", code: 404, userInfo: [NSLocalizedDescriptionKey: "Failed to search entities: \(error)"])))
         }
     }
 }

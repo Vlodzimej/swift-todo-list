@@ -14,6 +14,7 @@ protocol TaskManagerProtocol: AnyObject {
     func addTask(_ taskItem: TaskItem, completion: @escaping (Result<TaskItem, Error>) -> Void)
     func updateTask(by taskId: Int, with taskItem: TaskItem, completion: @escaping (Result<Void, Error>) -> Void)
     func removeTask(by taskId: Int, completion: @escaping (Result<Void, Error>) -> Void)
+    func getTasks(by searchText: String, completion: @escaping (Result<[TaskItem], Error>) -> Void)
 //    func find(metaTypeId: UUID, predicates: [NSPredicate], completion: @escaping ([TaskItem]) -> Void)
 //    func add(_ businessObject: TaskItem, completion: @escaping (TaskItem) -> Void)
 }
@@ -67,7 +68,7 @@ final class TaskManager: TaskManagerProtocol {
                 case .success(let result):
                     let taskItems = result.convertToTaskList()
                     do {
-                        try self.coreDataManager.saveEntities(entityName: .taskItem, dataArray: taskItems.compactMap { $0.toDictionary() })
+                        try self.coreDataManager.save(dataArray: taskItems.compactMap { $0.toDictionary() }, entityName: .taskItem)
                     }
                     catch {
                         debugPrint("Error")
@@ -128,32 +129,18 @@ final class TaskManager: TaskManagerProtocol {
         }
     }
     
-//    func find(metaTypeId: UUID, predicates: [NSPredicate], completion: @escaping ([TaskItem]) -> Void) {
-//        let concurrentQueue = DispatchQueue(label: "kraeved-concurrent-queue")
-//        concurrentQueue.async { [weak self] in
-//            guard let self else { return }
-//            var subPredicates = [NSPredicate(format: "%K = %@", "metaTypeId", metaTypeId.uuidString)]
-//            subPredicates += predicates
-//            let result = self.coreDataManager.find(entityName: Constants.entityName, predicates: subPredicates)
-//            let businessObjects: [BusinessObject] = result.compactMap { item in
-//                guard let item = item as? BusinessObjectCoreModel else { return nil }
-//                return BusinessObject(item)
-//            }
-//            completion(businessObjects)
-//        }
-//    }
-//    
-//    func add(_ businessObject: BusinessObject, completion: @escaping (TaskItem) -> Void) {
-//        let concurrentQueue = DispatchQueue(label: "kraeved-concurrent-queue")
-//        concurrentQueue.async { [weak self] in
-//            guard let self, let id = businessObject.id?.uuidString else { return }
-//            BusinessObjectCoreModel(businessObject)
-//            self.coreDataManager.saveContext()
-//            let subPredicates = [NSPredicate(format: "%K = %@", "id", id)]
-//            let result = self.coreDataManager.find(entityName: Constants.entityName, predicates: subPredicates)
-//            guard let item = result.first, let coreDataObject = item as? BusinessObjectCoreModel else { return }
-//            let businessObject = BusinessObject(coreDataObject)
-//            completion(businessObject)
-//        }
-//    }
+    func getTasks(by searchText: String, completion: @escaping (Result<[TaskItem], Error>) -> Void) {
+        coreDataManager.search(entityName: .taskItem, attributeNames: ["title", "todo"], searchText: searchText) { result in
+            switch result {
+                case .success(let taskListCoreData):
+                    let taskItems: [TaskItem] = taskListCoreData.compactMap({ item in
+                        guard let item = item as? TaskItemCoreModel else { return nil }
+                        return TaskItem(item)
+                    }).sorted(by: { $0.id > $1.id })
+                    completion(.success(taskItems))
+                case .failure(let error):
+                    completion(.failure(error))
+            }
+        }
+    }
 }

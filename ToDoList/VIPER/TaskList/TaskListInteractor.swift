@@ -12,6 +12,7 @@ protocol TaskListInteractorProtocol {
     var data: [TaskItem] { get }
     
     func fetchData(completion: @escaping () -> Void)
+    func searchTasks(with searhText: String, completion: @escaping () -> Void)
     func toggleTaskCompleteValue(in taskId: Int, completion: @escaping (_ indexForUpdate: Int?) -> Void)
     func perform(taskItem: TaskItem, completion: @escaping (_ indexForUpdate: Int?, _ indexForInsert: Int?) -> Void)
     func removeTask(by index: Int, completion: @escaping (Bool) -> Void)
@@ -35,6 +36,20 @@ final class TaskListInteractor: TaskListInteractorProtocol {
         taskManager.fetchAll { [weak self] taskList in
             self?.data = taskList
             completion()
+        }
+    }
+    
+    func searchTasks(with searhText: String, completion: @escaping () -> Void) {
+        taskManager.getTasks(by: searhText) { [weak self] result in
+            guard let self else { return }
+            switch result {
+                case .success(let taskItems):
+                    self.data = taskItems
+                    completion()
+                case .failure:
+                    self.data = []
+                    completion()
+            }
         }
     }
     
