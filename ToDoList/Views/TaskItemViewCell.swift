@@ -151,7 +151,7 @@ final class TaskItemViewCell: UITableViewCell {
         ])
         
         // Дата
-        dateLabel.attributedText = NSAttributedString(string: model.dateString, attributes: [
+        dateLabel.attributedText = NSAttributedString(string: model.date ?? "", attributes: [
             .font: UIFont.systemFont(ofSize: 12, weight: .regular), .foregroundColor: UIColor.TaskList.Foreground.second
         ])
         

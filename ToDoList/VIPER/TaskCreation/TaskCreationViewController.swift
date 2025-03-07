@@ -78,9 +78,12 @@ final class TaskCreationViewController: UIViewController, TaskCreationViewProtoc
         
         view.backgroundColor = .TaskList.Background.primary
         
-        let button = UIBarButtonItem()
-        button.setTitleTextAttributes([.foregroundColor: UIColor.yellow], for: .normal)
-        navigationItem.backBarButtonItem = button
+//        let button = UIBarButtonItem()
+//        button.setTitleTextAttributes([.foregroundColor: UIColor.yellow], for: .normal)
+//        navigationItem.backBarButtonItem = button
+        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Назад", style: .plain, target: nil, action: #selector(didTapBackButton))
+        
         navigationController?.navigationBar.prefersLargeTitles = false
         
         view.addSubview(titleTextField)
@@ -114,10 +117,16 @@ final class TaskCreationViewController: UIViewController, TaskCreationViewProtoc
         presenter.titleDidChange(newValue: text)
     }
     
+    @objc private func didTapBackButton() {
+        presenter.performCurrentTask { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
+        }
+    }
+    
     // MARK: Public Methods
     func update(with model: TaskItem) {
         titleTextField.text = model.title
-        dateLabel.text = model.dateString
+        dateLabel.text = model.date
         
         if model.todo.isEmpty {
             setDescriptionPlaceholder(isVisible: true)

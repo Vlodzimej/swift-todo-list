@@ -11,11 +11,12 @@ import UIKit
 protocol TaskCreationPresenterProtocol: UITextViewDelegate, UITextFieldDelegate {
     func viewDidLoad()
     func titleDidChange(newValue title: String)
+    func performCurrentTask(completion: @escaping () -> Void)
 }
 
 // MARK: - TaskCreationModuleOutput
 protocol TaskCreationModuleOutput: AnyObject {
-    func didFinishTaskEditing(hasChanges: Bool)
+    func didFinishTaskEditing(taskItem: TaskItem?)
 }
 
 // MARK: - TaskCreationPresenter
@@ -47,6 +48,13 @@ final class TaskCreationPresenter: NSObject, TaskCreationPresenterProtocol {
     func titleDidChange(newValue title: String) {
         interactor.update(title: title)
     }
+    
+    func performCurrentTask(completion: @escaping () -> Void) {
+        interactor.performCurrentTask { [weak self] taskItem in
+            self?.output?.didFinishTaskEditing(taskItem: taskItem)
+            completion()
+        }
+    }
 }
 
 // MARK: - UITextViewDelegate
@@ -62,13 +70,13 @@ extension TaskCreationPresenter: UITextViewDelegate {
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if interactor.task.todo.isEmpty {
+        if interactor.currentTask.todo.isEmpty {
             view?.setDescriptionPlaceholder(isVisible: false)
         }
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
-        if interactor.task.todo.isEmpty {
+        if interactor.currentTask.todo.isEmpty {
             view?.setDescriptionPlaceholder(isVisible: true)
         }
     }

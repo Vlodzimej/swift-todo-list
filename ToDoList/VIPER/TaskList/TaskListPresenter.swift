@@ -42,10 +42,10 @@ final class TaskListPresenter: NSObject, TaskListPresenterProtocol {
     }
     
     private func didTapRemoveTask(by index: Int) {
-        interactor.removeTask(by: index) { [weak self] in
-            guard let self else { return }
+        interactor.removeTask(by: index) { [weak self] result in
+            guard let self, result else { return }
             self.tableView?.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
-            self.view?.updateCount(with: self.interactor.data.count)
+            self.view?.refreshCount(with: self.interactor.data.count)
         }
     }
     
@@ -56,7 +56,7 @@ final class TaskListPresenter: NSObject, TaskListPresenterProtocol {
             guard let self else { return }
             DispatchQueue.main.async {
                 view.tableView.reloadData()
-                view.updateCount(with: self.interactor.data.count)
+                view.refreshCount(with: self.interactor.data.count)
             }
         }
     }
@@ -125,9 +125,18 @@ extension TaskListPresenter: TaskListFooterOutput {
 
 // MARK: - TaskCreationModuleOutput
 extension TaskListPresenter: TaskCreationModuleOutput {
-    func didFinishTaskEditing(hasChanges: Bool) {
-        #warning("TODO: Получить новые данные interactor.fetchData()")
-        view?.tableView.reloadData()
+    func didFinishTaskEditing(taskItem: TaskItem?) {
+        guard let taskItem else { return }
+        interactor.perform(taskItem: taskItem) { [weak self] indexForUpdate, indexForInsert in
+            guard let self else { return }
+            if let indexForUpdate {
+                self.view?.tableView.reloadRows(at: [IndexPath(row: indexForUpdate, section: 0)], with: .automatic)
+                
+            } else if let indexForInsert {
+                self.view?.tableView.insertRows(at: [IndexPath(row: indexForInsert, section: 0)], with: .automatic)
+            }
+            self.view?.refreshCount(with: interactor.data.count)
+        }
     }
 }
 

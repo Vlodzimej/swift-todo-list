@@ -11,7 +11,7 @@ import UIKit
 protocol TaskListViewProtocol: AnyObject {
     var tableView: UITableView { get }
     
-    func updateCount(with value: Int)
+    func refreshCount(with value: Int)
 }
 
 // MARK: - TaskListViewController
@@ -87,7 +87,7 @@ final class TaskListViewController: UIViewController, TaskListViewProtocol {
         presenter.viewDidLoad()
     }
     
-    // MARK: Private methods
+    // MARK: Private Methods
     private func configureSearchController() {
         searchController.searchResultsUpdater = presenter
         searchController.obscuresBackgroundDuringPresentation = false
@@ -99,7 +99,7 @@ final class TaskListViewController: UIViewController, TaskListViewProtocol {
     }
     
     // MARK: Public Methods
-    func updateCount(with value: Int) {
+    func refreshCount(with value: Int) {
         footerView.updateCount(with: value)
     }
 }

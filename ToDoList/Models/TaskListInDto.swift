@@ -27,6 +27,6 @@ struct TaskListInDto: Decodable {
                              todo: $0.todo,
                              completed: $0.completed,
                              userId: $0.userId,
-                             date: Date.now) }
+                             date: Date.now.toString(dateFormat: "dd/MM/yy")) }
     }
 }
