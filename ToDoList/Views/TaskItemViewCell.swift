@@ -34,7 +34,7 @@ final class TaskItemViewCell: UITableViewCell {
     }()
     
     // MARK: UIProperties
-    private lazy var statusImageView: UIImageView = {
+    lazy var statusImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -43,15 +43,15 @@ final class TaskItemViewCell: UITableViewCell {
         return imageView
     }()
     
-    private let titleLabel = UILabel()
-    private let descriptionLabel: UILabel = {
+    let titleLabel = UILabel()
+    let descriptionLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 2
         return label
     }()
-    private let dateLabel = UILabel()
+    let dateLabel = UILabel()
     
-    private let separatorView: UIView = {
+    let separatorView: UIView = {
         let view = UIView()
         view.backgroundColor = .TaskList.Element.separator
         view.translatesAutoresizingMaskIntoConstraints = false

@@ -26,7 +26,7 @@ final class TaskListFooterView: UIView {
     weak var output: TaskListFooterOutput?
     
     // MARK: UIProperties
-    private let separatorView: UIView = {
+    let separatorView: UIView = {
         let view = UIView()
         view.backgroundColor = .TaskList.Element.separator
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -41,7 +41,7 @@ final class TaskListFooterView: UIView {
         return label
     }()
     
-    private lazy var addButton: UIButton = {
+    lazy var addButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "addButton"), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
