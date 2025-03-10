@@ -14,37 +14,37 @@ final class TaskListModuleBuilderTests: XCTestCase {
     func testModuleAssembly() {
         let viewController = TaskListModuleBuilder.build() as! TaskListViewController
         
-        XCTAssertNotNil(viewController, "ViewController не создан")
-        XCTAssertTrue(viewController is TaskListViewController, "Неверный тип ViewController")
+        XCTAssertNotNil(viewController, "ViewController not created")
+        XCTAssertTrue(viewController is TaskListViewController, "Invalid ViewController type")
         
         let presenter = viewController.presenter
-        XCTAssertNotNil(presenter, "Presenter не создан")
-        XCTAssertTrue(presenter is TaskListPresenter, "Неверный тип Presenter")
+        XCTAssertNotNil(presenter, "Presenter not created")
+        XCTAssertTrue(presenter is TaskListPresenter, "Invalid Presenter type")
         
         guard let taskListPresenter = presenter as? TaskListPresenter else {
-            XCTFail("Presenter не соответствует протоколу")
+            XCTFail("Presenter does not conform to protocol")
             return
         }
         
-        XCTAssertNotNil(taskListPresenter.router, "Router не создан")
-        XCTAssertTrue(taskListPresenter.router is TaskListRouter, "Неверный тип Router")
+        XCTAssertNotNil(taskListPresenter.router, "Router not created")
+        XCTAssertTrue(taskListPresenter.router is TaskListRouter, "Invalid Router type")
         
-        XCTAssertNotNil(taskListPresenter.interactor, "Interactor не создан")
-        XCTAssertTrue(taskListPresenter.interactor is TaskListInteractor, "Неверный тип Interactor")
+        XCTAssertNotNil(taskListPresenter.interactor, "Interactor not created")
+        XCTAssertTrue(taskListPresenter.interactor is TaskListInteractor, "Invalid Interactor type")
         
         guard let router = taskListPresenter.router as? TaskListRouter else {
-            XCTFail("Router не соответствует протоколу")
+            XCTFail("Router does not conform to protocol")
             return
         }
-        XCTAssertTrue(router.view === viewController, "Router не имеет ссылки на ViewController")
+        XCTAssertTrue(router.view === viewController, "Router has no reference to ViewController")
         
-        XCTAssertTrue(viewController.presenter === presenter, "Presenter не привязан к View")
+        XCTAssertTrue(viewController.presenter === presenter, "Presenter is not attached to View")
         
         guard let interactor = taskListPresenter.interactor as? TaskListInteractor else {
-            XCTFail("Interactor не соответствует протоколу")
+            XCTFail("Interactor does not conform to protocol")
             return
         }
-        XCTAssertNotNil(interactor.taskManager, "TaskManager не инициализирован в Interactor")
+        XCTAssertNotNil(interactor.taskManager, "TaskManager not initialized in Interactor")
     }
     
     func testModuleDependencies() {
@@ -53,23 +53,23 @@ final class TaskListModuleBuilderTests: XCTestCase {
         guard let presenter = viewController.presenter as? TaskListPresenter,
               let interactor = presenter.interactor as? TaskListInteractor,
               let router = presenter.router as? TaskListRouter else {
-            XCTFail("Неверные зависимости модуля")
+            XCTFail("Invalid module dependencies")
             return
         }
         
         XCTAssertTrue(presenter.view === viewController,
-                      "Presenter должен иметь strong ссылку на View")
+                      "Presenter must have a strong reference to View")
         
         XCTAssertNotNil(presenter.interactor,
-                        "Presenter должен иметь ссылку на Interactor")
+                        "Presenter must have a reference to Interactor")
         
         XCTAssertNotNil(presenter.router,
-                        "Presenter должен иметь ссылку на Router")
+                        "Presenter must have a reference to Router")
         
         XCTAssertTrue(router.view === viewController,
                       "Router должен иметь weak ссылку на ViewController")
         
         XCTAssertNotNil(interactor.taskManager,
-                        "Interactor должен иметь ссылку на TaskManager")
+                        "Interactor must have a reference to TaskManager")
     }
 }

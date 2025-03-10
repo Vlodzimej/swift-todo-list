@@ -27,13 +27,24 @@ enum APIEndpoint {
 }
 
 // MARK: - APIManagerProtocol
-protocol APIManagerProtocol {}
+protocol APIManagerProtocol {
+    func request<T: Decodable>(endpoint: APIEndpoint, completion: @escaping (Result<T, Error>) -> Void) 
+}
 
 // MARK: - APIManager
 final class APIManager: APIManagerProtocol {
     
+    // MARK: Properties
     static let shared = APIManager()
     
+    let urlSession: URLSession
+    
+    // MARK: Init
+    init(urlSession: URLSession = URLSession.shared) {
+        self.urlSession = urlSession
+    }
+    
+    // MARK: Public Methods
     func request<T: Decodable>(endpoint: APIEndpoint, completion: @escaping (Result<T, Error>) -> Void) {
         guard let url = URL(string: endpoint.path) else {
             completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))

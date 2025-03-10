@@ -12,6 +12,7 @@ protocol TaskCreationPresenterProtocol: UITextViewDelegate, UITextFieldDelegate 
     func viewDidLoad()
     func titleDidChange(newValue title: String)
     func performCurrentTask(completion: @escaping () -> Void)
+    func dismiss()
 }
 
 // MARK: - TaskCreationModuleOutput
@@ -23,13 +24,15 @@ protocol TaskCreationModuleOutput: AnyObject {
 final class TaskCreationPresenter: NSObject, TaskCreationPresenterProtocol {
     
     // MARK: Properties
+    let router: TaskCreationRouterProtocol
     let interactor: TaskCreationInteractorProtocol
     private weak var output: TaskCreationModuleOutput?
     
     weak var view: TaskCreationViewProtocol?
     
     // MARK: Init
-    init(interactor: TaskCreationInteractorProtocol, output: TaskCreationModuleOutput?) {
+    init(router: TaskCreationRouterProtocol, interactor: TaskCreationInteractorProtocol, output: TaskCreationModuleOutput?) {
+        self.router = router
         self.interactor = interactor
         self.output = output
     }
@@ -52,6 +55,10 @@ final class TaskCreationPresenter: NSObject, TaskCreationPresenterProtocol {
             self?.output?.didFinishTaskEditing(taskItem: taskItem)
             completion()
         }
+    }
+    
+    func dismiss() {
+        router.dismiss()
     }
 }
 

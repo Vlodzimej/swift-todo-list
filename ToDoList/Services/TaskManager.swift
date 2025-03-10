@@ -15,8 +15,6 @@ protocol TaskManagerProtocol: AnyObject {
     func updateTask(by taskId: Int, with taskItem: TaskItem, completion: @escaping (Result<Void, Error>) -> Void)
     func removeTask(by taskId: Int, completion: @escaping (Result<Void, Error>) -> Void)
     func getTasks(by searchText: String, completion: @escaping (Result<[TaskItem], Error>) -> Void)
-//    func find(metaTypeId: UUID, predicates: [NSPredicate], completion: @escaping ([TaskItem]) -> Void)
-//    func add(_ businessObject: TaskItem, completion: @escaping (TaskItem) -> Void)
 }
 
 

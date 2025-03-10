@@ -13,10 +13,23 @@ final class MockTaskCreationPresenter: NSObject, TaskCreationPresenterProtocol {
     var didCallViewDidLoad = false
     var updatedTitle: String?
     var didPerformTask = false
+    var didDismiss = false
     
-    func viewDidLoad() { didCallViewDidLoad = true }
-    func titleDidChange(newValue title: String) { updatedTitle = title }
-    func performCurrentTask(completion: @escaping () -> Void) { didPerformTask = true; completion() }
+    func viewDidLoad() {
+        didCallViewDidLoad = true
+    }
+    
+    func titleDidChange(newValue title: String) {
+        updatedTitle = title
+    }
+    
+    func performCurrentTask(completion: @escaping () -> Void) {
+        didPerformTask = true; completion()
+    }
+    
+    func dismiss() {
+        didDismiss = true
+    }
     
     func textViewDidChange(_ textView: UITextView) {}
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool { true }

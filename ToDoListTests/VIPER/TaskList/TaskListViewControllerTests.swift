@@ -37,7 +37,7 @@ final class TaskListViewControllerTests: XCTestCase {
     }
     
     func testViewControllerHasCorrectTitle() {
-        XCTAssertEqual(viewController.title, "Tasks")
+        XCTAssertEqual(viewController.navigationItem.title, "Tasks")
     }
     
     func testTableViewConfiguration() {

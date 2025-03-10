@@ -11,17 +11,20 @@ import XCTest
 // MARK: - TaskCreationPresenterTests
 final class TaskCreationPresenterTests: XCTestCase {
     var presenter: TaskCreationPresenter!
+    var mockRouter: MockTaskCreationRouter!
     var mockInteractor: MockTaskCreationInteractor!
     var mockView: MockTaskCreationViewController!
     var mockOutput: MockModuleOutput!
     
     override func setUp() {
         super.setUp()
+        mockRouter = MockTaskCreationRouter()
         mockInteractor = MockTaskCreationInteractor()
         mockView = MockTaskCreationViewController()
         mockOutput = MockModuleOutput()
         
         presenter = TaskCreationPresenter(
+            router: mockRouter,
             interactor: mockInteractor,
             output: mockOutput
         )

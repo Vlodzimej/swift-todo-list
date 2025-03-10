@@ -78,13 +78,12 @@ final class TaskCreationViewController: UIViewController, TaskCreationViewProtoc
         
         view.backgroundColor = .TaskList.Background.primary
         
-//        let button = UIBarButtonItem()
-//        button.setTitleTextAttributes([.foregroundColor: UIColor.yellow], for: .normal)
-//        navigationItem.backBarButtonItem = button
-        
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: String(localized: "back"), style: .plain, target: nil, action: #selector(didTapBackButton))
-        
-        navigationController?.navigationBar.prefersLargeTitles = false
+        navigationItem.largeTitleDisplayMode = .never
+        navigationItem.backAction = UIAction { [weak self] _ in
+            guard let self else { return }
+            self.didTapBackButton()
+            self.presenter.dismiss()
+        }
         
         view.addSubview(titleTextField)
         NSLayoutConstraint.activate([
@@ -117,7 +116,7 @@ final class TaskCreationViewController: UIViewController, TaskCreationViewProtoc
         presenter.titleDidChange(newValue: text)
     }
     
-    @objc private func didTapBackButton() {
+    private func didTapBackButton() {
         presenter.performCurrentTask { [weak self] in
             self?.navigationController?.popViewController(animated: true)
         }

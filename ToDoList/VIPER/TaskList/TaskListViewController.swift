@@ -86,7 +86,6 @@ final class TaskListViewController: UIViewController, TaskListViewProtocol {
         configureNavigationBar(largeTitleColor: .TaskList.Foreground.primary, backgoundColor: .TaskList.Background.primary, tintColor: .TaskList.Element.button, title: String(localized: "tasks"), preferredLargeTitle: true)
         
         configureSearchController()
-        title = String(localized: "tasks")
         presenter.viewDidLoad()
     }
     

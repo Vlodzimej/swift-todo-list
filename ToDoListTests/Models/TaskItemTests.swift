@@ -77,7 +77,7 @@ final class TaskItemTests: XCTestCase {
     }
     
     func testCodableWithCoreDataFields() throws {
-        let originalItem = TaskItem(id: 1, title: "Codable Title", todo: "Codable Todo", completed: true, userId: 123, date: "2025-03-04"
+        let originalItem = TaskItem(id: 1, title: "Codable Title", todo: "Codable Todo", completed: true, userId: 123, date: "2025-03-04")
         
         let encoder = JSONEncoder()
         let data = try encoder.encode(originalItem)
