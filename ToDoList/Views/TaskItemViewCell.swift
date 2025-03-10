@@ -27,20 +27,18 @@ final class TaskItemViewCell: UITableViewCell {
     // MARK: Properties
     weak var output: TaskItemViewCellOutput?
     
-    private var taskId: Int? = nil
+    var taskId: Int? = nil
     
     static let identifier: String = {
         String(describing: TaskItemViewCell.self)
     }()
     
     // MARK: UIProperties
-    lazy var statusImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapStatusIcon)))
-        imageView.isUserInteractionEnabled = true
-        return imageView
+    lazy var statusButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(didTapStatusIcon), for: .touchUpInside)
+        return button
     }()
     
     let titleLabel = UILabel()
@@ -65,12 +63,12 @@ final class TaskItemViewCell: UITableViewCell {
         backgroundColor = .TaskList.Background.primary
         selectionStyle = .none
         
-        addSubview(statusImageView)
+        addSubview(statusButton)
         NSLayoutConstraint.activate([
-            statusImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: UIConstants.verticalPadding),
-            statusImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            statusImageView.widthAnchor.constraint(equalToConstant: UIConstants.imageSize),
-            statusImageView.heightAnchor.constraint(equalToConstant: UIConstants.imageSize)
+            statusButton.topAnchor.constraint(equalTo: self.topAnchor, constant: UIConstants.verticalPadding),
+            statusButton.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            statusButton.widthAnchor.constraint(equalToConstant: UIConstants.imageSize),
+            statusButton.heightAnchor.constraint(equalToConstant: UIConstants.imageSize)
         ])
         
         let textStackView = UIStackView(arrangedSubviews: [titleLabel, descriptionLabel, dateLabel])
@@ -83,7 +81,7 @@ final class TaskItemViewCell: UITableViewCell {
         NSLayoutConstraint.activate([
             textStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: UIConstants.verticalPadding),
             textStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            textStackView.leadingAnchor.constraint(equalTo: self.statusImageView.trailingAnchor, constant: UIConstants.textStackPadding),
+            textStackView.leadingAnchor.constraint(equalTo: self.statusButton.trailingAnchor, constant: UIConstants.textStackPadding),
             textStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -UIConstants.verticalPadding)
         ])
         
@@ -108,7 +106,6 @@ final class TaskItemViewCell: UITableViewCell {
         titleLabel.attributedText = nil
         descriptionLabel.attributedText = nil
         dateLabel.attributedText = nil
-        statusImageView.image = nil
         taskId = nil
     }
     
@@ -124,7 +121,7 @@ final class TaskItemViewCell: UITableViewCell {
         
         // Иконка статуса
         let imageName = model.completed ? "ok" : "empty"
-        statusImageView.image = UIImage(named: imageName)
+        statusButton.setImage(UIImage(named: imageName), for: .normal)
         
         // Заголовок
         let paragraphStyle = NSMutableParagraphStyle()

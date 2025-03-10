@@ -15,7 +15,7 @@ final class TaskItemPreviewViewControllerTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        let task = TaskItem(id: 1, title: "Test Title", todo: "Test Description", completed: false, userId: 1, date: "01/01/2025")
+        let task = TaskItem(id: 1, title: "Test Title", todo: "Test Description", completed: false, userId: 1, date: "01/01/25")
         previewVC = TaskItemPreviewViewController(model: task)
         _ = previewVC.view // Trigger viewDidLoad
     }

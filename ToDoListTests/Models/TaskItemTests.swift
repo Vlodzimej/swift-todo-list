@@ -29,7 +29,6 @@ final class TaskItemTests: XCTestCase {
         context = persistentContainer.viewContext
     }
     
-    // MARK: - CoreData Conversion Tests
     func testCoreDataConversion() {
         let coreModel = TaskItemCoreModel(context: context)
         coreModel.id = 1
@@ -50,14 +49,7 @@ final class TaskItemTests: XCTestCase {
     }
     
     func testReverseCoreDataConversion() {
-        let taskItem = TaskItem(
-            id: 2,
-            title: "Reverse Test",
-            todo: "Reverse Conversion",
-            completed: false,
-            userId: 456,
-            date: "2025-03-05"
-        )
+        let taskItem = TaskItem(id: 2, title: "Reverse Test", todo: "Reverse Conversion", completed: false, userId: 456, date: "2025-03-05")
         
         let coreModel = TaskItemCoreModel(context: context)
         coreModel.id = Int32(taskItem.id)
@@ -75,49 +67,17 @@ final class TaskItemTests: XCTestCase {
         XCTAssertEqual(coreModel.date, taskItem.date)
     }
     
-    // MARK: - Custom Operator Tests
     func testCustomInequalityOperator() {
-        let item1 = TaskItem(
-            id: 1,
-            title: "Title A",
-            todo: "Todo A",
-            completed: false,
-            userId: 123,
-            date: "2025-01-01"
-        )
-        
-        let item2 = TaskItem(
-            id: 2,
-            title: "Title B",
-            todo: "Todo B",
-            completed: true,
-            userId: 456,
-            date: "2025-02-02"
-        )
-        
-        let item3 = TaskItem(
-            id: 3,
-            title: "Title A",
-            todo: "Todo A",
-            completed: true,
-            userId: 789,
-            date: "2025-03-03"
-        )
+        let item1 = TaskItem(id: 1, title: "Title A", todo: "Todo A", completed: false, userId: 123, date: "2025-01-01")
+        let item2 = TaskItem(id: 2, title: "Title B", todo: "Todo B", completed: true, userId: 456, date: "2025-02-02")
+        let item3 = TaskItem(id: 3, title: "Title A", todo: "Todo A", completed: true, userId: 789, date: "2025-03-03")
         
         XCTAssertTrue(item1 != item2, "Should be different in title or todo")
         XCTAssertFalse(item1 != item3, "Should be equal in title and todo")
     }
     
-    // MARK: - Codable Tests
     func testCodableWithCoreDataFields() throws {
-        let originalItem = TaskItem(
-            id: 1,
-            title: "Codable Title",
-            todo: "Codable Todo",
-            completed: true,
-            userId: 123,
-            date: "2025-03-04"
-        )
+        let originalItem = TaskItem(id: 1, title: "Codable Title", todo: "Codable Todo", completed: true, userId: 123, date: "2025-03-04"
         
         let encoder = JSONEncoder()
         let data = try encoder.encode(originalItem)
@@ -128,7 +88,6 @@ final class TaskItemTests: XCTestCase {
         XCTAssertEqual(originalItem, decodedItem)
     }
     
-    // MARK: - Edge Cases
     func testNilValuesConversion() {
         let coreModel = TaskItemCoreModel(context: context)
         coreModel.id = 1
@@ -157,34 +116,10 @@ final class TaskItemTests: XCTestCase {
         XCTAssertEqual(taskItem.userId, maxId)
     }
     
-    // MARK: - Equatable Tests
     func testFullEqualityCheck() {
-        let item1 = TaskItem(
-            id: 1,
-            title: "Test",
-            todo: "Test",
-            completed: false,
-            userId: 123,
-            date: "2025-01-01"
-        )
-        
-        let item2 = TaskItem(
-            id: 1,
-            title: "Test",
-            todo: "Test",
-            completed: false,
-            userId: 123,
-            date: "2025-01-01"
-        )
-        
-        let item3 = TaskItem(
-            id: 1,
-            title: "Test",
-            todo: "Test",
-            completed: true,
-            userId: 123,
-            date: "2025-01-01"
-        )
+        let item1 = TaskItem(id: 1, title: "Test", todo: "Test", completed: false, userId: 123, date: "2025-01-01")
+        let item2 = TaskItem(id: 1, title: "Test", todo: "Test", completed: false, userId: 123, date: "2025-01-01")
+        let item3 = TaskItem(id: 1, title: "Test", todo: "Test", completed: true, userId: 123, date: "2025-01-01")
         
         XCTAssertEqual(item1, item2)
         XCTAssertNotEqual(item1, item3)

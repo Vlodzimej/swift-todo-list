@@ -22,6 +22,7 @@ protocol TaskListInteractorProtocol {
 final class TaskListInteractor: TaskListInteractorProtocol {
 
     // MARK: Properties
+    weak var presenter: TaskListPresenter?
     let taskManager: TaskManagerProtocol
     
     var data: [TaskItem] = []
@@ -60,12 +61,13 @@ final class TaskListInteractor: TaskListInteractorProtocol {
         taskItem.completed.toggle()
         
         taskManager.updateTask(by: taskId, with: taskItem) { [weak self] result in
+            guard let self else { return }
             switch result {
                 case .success:
-                    self?.data[index] = taskItem
+                    self.data[index] = taskItem
                     completion(index)
                 case .failure:
-                    debugPrint("Error when switching task status")
+                    self.presenter?.showError(message: String(localized: "errorSwitchTaskStatus"))
                     completion(nil)
             }
             
@@ -89,11 +91,13 @@ final class TaskListInteractor: TaskListInteractorProtocol {
         }
         
         taskManager.removeTask(by: taskItem.id) { [weak self] result in
+            guard let self else { return }
             switch result {
                 case .success:
-                    self?.data.remove(at: index)
+                    self.data.remove(at: index)
                     completion(true)
                 case .failure:
+                    self.presenter?.showError(message: String(localized: "errorRemoveTask"))
                     completion(false)
             }
         }

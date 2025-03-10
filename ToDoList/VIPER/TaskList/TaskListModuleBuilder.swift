@@ -16,6 +16,7 @@ final class TaskListModuleBuilder {
         let viewController = TaskListViewController(presenter: presenter)
         presenter.view = viewController
         router.view = viewController
+        interactor.presenter = presenter
         
         return viewController
     }
