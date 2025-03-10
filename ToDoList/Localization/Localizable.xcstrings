@@ -119,10 +119,36 @@
       }
     },
     "errorRemoveTask" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to delete entry"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не удалось удалить запись"
+          }
+        }
+      }
     },
     "errorSwitchTaskStatus" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to change the status of the entry"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не удалось изменить статус записи"
+          }
+        }
+      }
     },
     "remove" : {
       "localizations" : {
