@@ -28,10 +28,10 @@ final class TaskCreationViewController: UIViewController, TaskCreationViewProtoc
     }
     
     // MARK: Properties
-    private let presenter: TaskCreationPresenterProtocol
+    let presenter: TaskCreationPresenterProtocol
     
     // MARK: UIProperties
-    private lazy var titleTextField: UITextField = {
+    lazy var titleTextField: UITextField = {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.textColor = .TaskList.Foreground.primary
@@ -44,7 +44,7 @@ final class TaskCreationViewController: UIViewController, TaskCreationViewProtoc
         return textField
     }()
     
-    private let dateLabel: UILabel = {
+    let dateLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12)
         label.textColor = .TaskList.Foreground.second
@@ -52,7 +52,7 @@ final class TaskCreationViewController: UIViewController, TaskCreationViewProtoc
         return label
     }()
     
-    private lazy var descriptionTextView: UITextView = {
+    lazy var descriptionTextView: UITextView = {
         let textView = UITextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.textColor = .TaskList.Foreground.primary
@@ -112,7 +112,7 @@ final class TaskCreationViewController: UIViewController, TaskCreationViewProtoc
         presenter.viewDidLoad()
     }
 
-    @objc private func titleTextFieldDidChange() {
+    @objc func titleTextFieldDidChange() {
         guard let text = titleTextField.text else { return }
         presenter.titleDidChange(newValue: text)
     }

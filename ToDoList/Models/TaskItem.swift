@@ -15,10 +15,6 @@ struct TaskItem: Codable, Equatable {
     var completed: Bool
     let userId: Int
     let date: String?
-  
-//    var dateString: String {
-//        date?.toString(dateFormat: "dd/MM/yy") ?? ""
-//    }
     
     init(id: Int, title: String?, todo: String, completed: Bool, userId: Int, date: String?) {
         self.id = id

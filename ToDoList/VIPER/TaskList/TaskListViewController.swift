@@ -12,6 +12,8 @@ protocol TaskListViewProtocol: AnyObject {
     var tableView: UITableView { get }
     
     func refreshCount(with value: Int)
+    func refreshTable()
+    func showError(message: String)
 }
 
 // MARK: - TaskListViewController
@@ -25,7 +27,7 @@ final class TaskListViewController: UIViewController, TaskListViewProtocol {
     }
     
     // MARK: Properties
-    private var presenter: TaskListPresenterProtocol
+    var presenter: TaskListPresenterProtocol
     
     // MARK: UIProperites
     private let searchController = UISearchController()
@@ -42,7 +44,7 @@ final class TaskListViewController: UIViewController, TaskListViewProtocol {
         return tableView
     }()
     
-    private lazy var footerView: TaskListFooterView = {
+    lazy var footerView: TaskListFooterView = {
         let view = TaskListFooterView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.output = presenter
@@ -84,7 +86,14 @@ final class TaskListViewController: UIViewController, TaskListViewProtocol {
         configureNavigationBar(largeTitleColor: .TaskList.Foreground.primary, backgoundColor: .TaskList.Background.primary, tintColor: .TaskList.Element.button, title: String(localized: "tasks"), preferredLargeTitle: true)
         
         configureSearchController()
+        title = String(localized: "tasks")
         presenter.viewDidLoad()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        let view = UIView(frame: .init(x: 0, y: 0, width: view.bounds.width, height: footerView.bounds.height - view.safeAreaInsets.bottom))
+        view.backgroundColor = .clear
+        tableView.tableFooterView = view
     }
     
     // MARK: Private Methods
@@ -101,6 +110,19 @@ final class TaskListViewController: UIViewController, TaskListViewProtocol {
     // MARK: Public Methods
     func refreshCount(with value: Int) {
         footerView.updateCount(with: value)
+    }
+    
+    func refreshTable() {
+        tableView.reloadData()
+    }
+    
+    func showError(message: String) {
+        let alert = UIAlertController(title: String(localized: "error"), message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.present(alert, animated: true)
+        }
     }
 }
 

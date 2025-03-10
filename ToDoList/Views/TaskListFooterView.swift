@@ -18,6 +18,8 @@ final class TaskListFooterView: UIView {
     private struct UIConstants {
         static let separatorHeight: CGFloat = 1
         static let countLabelTopOffset: CGFloat = 20.5
+        static let addButtonTopOffset: CGFloat = 13
+        static let addButtonRightOffset: CGFloat = 20
     }
     
     // MARK: Properties
@@ -31,7 +33,7 @@ final class TaskListFooterView: UIView {
         return view
     }()
     
-    private let countLabel: UILabel = {
+    let countLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 13)
         label.textColor = .TaskList.Foreground.primary
@@ -68,8 +70,8 @@ final class TaskListFooterView: UIView {
         
         addSubview(addButton)
         NSLayoutConstraint.activate([
-            addButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 13),
-            addButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20)
+            addButton.topAnchor.constraint(equalTo: self.topAnchor, constant: UIConstants.addButtonTopOffset),
+            addButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -UIConstants.addButtonRightOffset)
         ])
     }
     

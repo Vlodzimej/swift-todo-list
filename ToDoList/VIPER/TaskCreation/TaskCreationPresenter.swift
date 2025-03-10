@@ -23,15 +23,13 @@ protocol TaskCreationModuleOutput: AnyObject {
 final class TaskCreationPresenter: NSObject, TaskCreationPresenterProtocol {
     
     // MARK: Properties
-    private let router: TaskCreationRouterProtocol
-    private let interactor: TaskCreationInteractorProtocol
+    let interactor: TaskCreationInteractorProtocol
     private weak var output: TaskCreationModuleOutput?
     
     weak var view: TaskCreationViewProtocol?
     
     // MARK: Init
-    init(router: TaskCreationRouterProtocol, interactor: TaskCreationInteractorProtocol, output: TaskCreationModuleOutput?) {
-        self.router = router
+    init(interactor: TaskCreationInteractorProtocol, output: TaskCreationModuleOutput?) {
         self.interactor = interactor
         self.output = output
     }

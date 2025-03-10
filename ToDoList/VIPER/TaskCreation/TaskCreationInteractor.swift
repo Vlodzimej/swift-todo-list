@@ -23,7 +23,7 @@ protocol TaskCreationInteractorProtocol {
 final class TaskCreationInteractor: TaskCreationInteractorProtocol {
     
     // MARK: Properties
-    private let taskManager: TaskManagerProtocol
+    let taskManager: TaskManagerProtocol
     
     let initialTask: TaskItem?
     private(set) var currentTask: TaskItem

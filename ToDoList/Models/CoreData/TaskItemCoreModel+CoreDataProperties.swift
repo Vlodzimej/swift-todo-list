@@ -16,13 +16,13 @@ extension TaskItemCoreModel {
         return NSFetchRequest<TaskItemCoreModel>(entityName: "TaskItemCoreModel")
     }
 
-    @NSManaged public var completed: Bool
-    @NSManaged public var date: String?
     @NSManaged public var id: Int32
     @NSManaged public var title: String?
     @NSManaged public var todo: String?
+    @NSManaged public var completed: Bool
     @NSManaged public var userId: Int32
-
+    @NSManaged public var date: String?
+    
     @discardableResult
     convenience init(_ taskItem: TaskItem) {
         self.init()

@@ -11,15 +11,22 @@ import UIKit
 protocol TaskListPresenterProtocol: UISearchResultsUpdating, UITableViewDelegate, UITableViewDataSource, TaskListFooterOutput  {
     func viewDidLoad()
     func getTask(by index: Int) -> TaskItem?
+    func showError(message: String)
+    
+    var taskCount: Int { get }
 }
 
 // MARK: - TaskListPresenter
 final class TaskListPresenter: NSObject, TaskListPresenterProtocol {
     
     // MARK: Properties
-    private let router: TaskListRouterProtocol
-    private let interactor: TaskListInteractorProtocol
+    let router: TaskListRouterProtocol
+    let interactor: TaskListInteractorProtocol
     weak var view: TaskListViewProtocol?
+    
+    var taskCount: Int {
+        interactor.data.count
+    }
     
     private var tableView: UITableView? {
         view?.tableView
@@ -55,14 +62,18 @@ final class TaskListPresenter: NSObject, TaskListPresenterProtocol {
         interactor.fetchData() { [weak self] in
             guard let self else { return }
             DispatchQueue.main.async {
-                view.tableView.reloadData()
-                view.refreshCount(with: self.interactor.data.count)
+                view.refreshTable()
+                view.refreshCount(with: self.taskCount)
             }
         }
     }
     
     func getTask(by index: Int) -> TaskItem? {
         return interactor.data[safe: index]
+    }
+    
+    func showError(message: String) {
+        view?.showError(message: message)
     }
 }
 

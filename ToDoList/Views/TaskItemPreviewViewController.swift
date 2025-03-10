@@ -10,6 +10,14 @@ import UIKit
 // MARK: - TaskItemCardView
 final class TaskItemPreviewViewController: UIViewController {
     
+    // MARK: UIConstants
+    private struct UIConstants {
+        static let textStackHorizontalPadding: CGFloat = 12
+        static let textStackVerticalPadding: CGFloat = 16
+        static let cornerRadius: CGFloat = 12
+        static let preferredHeight: CGFloat = 106
+    }
+
     private let model: TaskItem
     
     init(model: TaskItem) {
@@ -27,7 +35,7 @@ final class TaskItemPreviewViewController: UIViewController {
     
     private func configure() {
         view.backgroundColor = .TaskList.Background.second
-        view.layer.cornerRadius = 12
+        view.layer.cornerRadius = UIConstants.cornerRadius
         
         // Заголовок
         let paragraphStyle = NSMutableParagraphStyle()
@@ -71,12 +79,12 @@ final class TaskItemPreviewViewController: UIViewController {
         
         view.addSubview(textStackView)
         NSLayoutConstraint.activate([
-            textStackView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 12),
-            textStackView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16),
-            textStackView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -16),
-            textStackView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -12)
+            textStackView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: UIConstants.textStackVerticalPadding),
+            textStackView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: UIConstants.textStackHorizontalPadding),
+            textStackView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -UIConstants.textStackHorizontalPadding),
+            textStackView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -UIConstants.textStackVerticalPadding)
         ])
         
-        preferredContentSize = .init(width: textStackView.bounds.width, height: 106)
+        preferredContentSize = .init(width: textStackView.bounds.width, height: UIConstants.preferredHeight)
     }
 }

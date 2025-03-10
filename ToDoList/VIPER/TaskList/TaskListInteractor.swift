@@ -22,9 +22,9 @@ protocol TaskListInteractorProtocol {
 final class TaskListInteractor: TaskListInteractorProtocol {
 
     // MARK: Properties
-    private let taskManager: TaskManagerProtocol
+    let taskManager: TaskManagerProtocol
     
-    private(set) var data: [TaskItem] = []
+    var data: [TaskItem] = []
     
     // MARK: Init
     init(taskManager: TaskManagerProtocol = TaskManager.shared) {

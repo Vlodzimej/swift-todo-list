@@ -16,12 +16,14 @@ protocol TaskListRouterProtocol {
 // MARK: - TaskListRouter
 final class TaskListRouter: TaskListRouterProtocol {
     
+    // MARK: Properties
     weak var view: UIViewController?
     
     private var navigationController: UINavigationController? {
         view?.navigationController
     }
     
+    // MARK: Public Methods
     func openTaskCreation(output: TaskCreationModuleOutput?) {
         let viewController = TaskCreationModuleBuilder.build(output: output)
         navigationController?.pushViewController(viewController, animated: true)
